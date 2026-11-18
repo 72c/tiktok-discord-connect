@@ -1,0 +1,66 @@
+{
+    "manifest_version": 3,
+    "minimum_chrome_version": "121",
+
+    "name": "Discord Connections+",
+    "version": "1.0.0",
+    "description": "Brings back the account connections Discord hides (TikTok, Instagram, Mastodon and more) and lets you try linking them. Based on Endcord.",
+    "homepage_url": "https://github.com/Endcord/Endcord",
+
+    "icons": {
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+
+    "action": {
+        "default_title": "Connections+ (Alt+Shift+C)",
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "32": "icons/icon32.png",
+            "48": "icons/icon48.png"
+        }
+    },
+
+    "background": {
+        "service_worker": "src/background.js",
+        "scripts": ["src/background.js"]
+    },
+
+    "permissions": ["scripting"],
+
+    "host_permissions": [
+        "https://discord.com/*",
+        "https://ptb.discord.com/*",
+        "https://canary.discord.com/*"
+    ],
+
+    "content_scripts": [
+        {
+            "matches": ["https://discord.com/*", "https://ptb.discord.com/*", "https://canary.discord.com/*"],
+            "js": ["src/page.js"],
+            "run_at": "document_start",
+            "world": "MAIN"
+        },
+        {
+            "matches": ["https://discord.com/*", "https://ptb.discord.com/*", "https://canary.discord.com/*"],
+            "js": ["src/bridge.js"],
+            "run_at": "document_start"
+        }
+    ],
+
+    "commands": {
+        "_execute_action": {
+            "suggested_key": { "default": "Alt+Shift+C" },
+            "description": "Open or close the Connections+ panel"
+        }
+    },
+
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "discord-connections-plus@local",
+            "strict_min_version": "128.0"
+        }
+    }
+}
